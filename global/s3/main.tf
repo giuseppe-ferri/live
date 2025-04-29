@@ -8,7 +8,7 @@ resource "aws_s3_bucket" "terraform_state" {
   # force_destroy = true
   # Prevent accidental deletion of this S3 bucket
   lifecycle {
-    prevent_destroy = true # default: true
+    prevent_destroy = true# default: true
   }
 }
 
@@ -54,15 +54,15 @@ resource "aws_dynamodb_table" "terraform_locks" {
   }
 }
 
-terraform {
-  backend "s3" {
-    # Replace this with your bucket table name!
-    bucket = "unique-name-bucket-jiow02"
-    key    = "global/s3/terraform.tfstate"
-    region = "us-east-2"
+# terraform {
+#   backend "s3" {
+#     # Replace this with your bucket table name!
+#     bucket = "unique-name-bucket-jiow02"
+#     key    = "global/s3/terraform.tfstate"
+#     region = "us-east-2"
 
-    # Replace this with your DynamoDB table name!
-    dynamodb_table = "unique-name-dynamo-jiow02"
-    encrypt        = true
-  }
-}
+#     # Replace this with your DynamoDB table name!
+#     dynamodb_table = "unique-name-dynamo-jiow02"
+#     encrypt        = true
+#   }
+# }
