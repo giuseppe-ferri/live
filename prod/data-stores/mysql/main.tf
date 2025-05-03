@@ -1,28 +1,48 @@
 provider "aws" {
   region = "us-east-2"
+  alias  = "primary"
 }
 
-resource "aws_db_instance" "example" {
-  identifier_prefix   = "terraform-"
-  engine              = "mysql"
-  allocated_storage   = 10
-  instance_class      = "db.t3.micro"
-  skip_final_snapshot = true
-  db_name             = "example_database"
-
-  username = var.db_username
-  password = var.db_password
+provider "aws" {
+  region = "us-west-1"
+  alias  = "replica"
 }
 
-terraform {
-  backend "s3" {
-    # Replace this with your bucket name!
-    bucket = "unique-name-bucket-jiow02"
-    key    = "prod/data-stores/mysql/terraform.tfstate"
-    region = "us-east-2"
+module "mysql_primary" {
+  source = "../../../../modules/data-stores/mysql"
 
-    # Replace this with your DynamoDB table name!
-    dynamodb_table = "unique-name-dynamo-jiow02"
-    encrypt        = true
+  providers = {
+    aws = aws.primary
   }
+
+  db_name     = "prod_db"
+  db_username = var.db_username
+  db_password = var.db_password
+
+  # Must be enabled to support replication
+  backup_retention_period = 1
 }
+
+module "mysql_replica" {
+  source = "../../../../modules/data-stores/mysql"
+
+  providers = {
+    aws = aws.replica
+  }
+
+  # Make this a replica of the primary
+  replicate_source_db = module.mysql_primary.arn
+}
+
+# terraform {
+#   backend "s3" {
+#     # Replace this with your bucket name!
+#     bucket = "unique-name-bucket-jiow02"
+#     key    = "prod/data-stores/mysql/terraform.tfstate"
+#     region = "us-east-2"
+
+#     # Replace this with your DynamoDB table name!
+#     dynamodb_table = "unique-name-dynamo-jiow02"
+#     encrypt        = true
+#   }
+# }
