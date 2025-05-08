@@ -1,11 +1,27 @@
 provider "aws" {
   region = "us-east-2"
   alias  = "primary"
+
+  # Tags to apply to all AWS resources by default
+  default_tags {
+    tags = {
+      Owner     = "team-devops"
+      ManagedBy = "Terraform"
+    }
+  }
 }
 
 provider "aws" {
   region = "us-west-1"
   alias  = "replica"
+
+  # Tags to apply to all AWS resources by default
+  default_tags {
+    tags = {
+      Owner     = "team-devops"
+      ManagedBy = "Terraform"
+    }
+  }
 }
 
 module "mysql_primary" {
