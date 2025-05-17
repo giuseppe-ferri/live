@@ -9,3 +9,21 @@ variable "db_password" {
   type        = string
   sensitive   = true
 }
+
+variable "instance_class" {
+  description = "The instance type of the RDS instance"
+  type = string
+  default = "db.t3.micro"
+}
+
+variable "allocated_storage" {
+  description = "The storage size in GiB"
+  type = number
+  default = 20
+}
+
+variable "multi_az" {
+  description = "Enable Multi-AZ deployment"
+  type = bool
+  default = false
+}

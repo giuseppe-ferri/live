@@ -13,10 +13,10 @@ provider "aws" {
 resource "aws_s3_bucket" "terraform_state" {
   bucket = "unique-name-bucket-jiow02"
 
-  force_destroy = true
+  # force_destroy = true
   # Prevent accidental deletion of this S3 bucket
   lifecycle {
-    prevent_destroy = false# default: true
+    prevent_destroy = true# default: true
   }
 }
 

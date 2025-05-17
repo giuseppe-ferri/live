@@ -16,6 +16,13 @@ module "mysql_stage" {
   db_name = "stage_db"
   db_username = var.db_username
   db_password = var.db_password
+  # instance_class = "db.t3.micro"
+  # allocated_storage = 20
+  # engine = "mysql"
+  # engine_version = "8.0"
+  # multi_az = false
+  # skip_final_snapshot = true
+  backup_retention_period = 0
 }
 
 terraform {
