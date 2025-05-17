@@ -9,7 +9,7 @@ provider "aws" {
 }
 
 module "vpc" {
-  source = "github.com/giuseppe-ferri/modules//networking/vpc"
+  source = "../../../modules/networking/vpc"
   environment = "stage"
   vpc_cidr = "10.0.0.0/16"
   public_subnet_cidrs = ["10.0.1.0/24", "10.0.2.0/24"]
@@ -18,7 +18,7 @@ module "vpc" {
 }
 
 module "postgres_stage" {
-  source = "github.com/giuseppe-ferri/modules//data-stores/postgres"
+  source = "../../../modules/data-stores/postgres"
   environment = "stage"
   db_name = "stage_db"
   db_username = var.db_username
